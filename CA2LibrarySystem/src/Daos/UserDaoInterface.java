@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 interface UserDaoInterface {
     //check if user email and password exist;....
-    public ArrayList<User> Login(String email, String password);
+    public boolean Login(String email, String password);
     //allow user to register; ... 
     public boolean AddUser(User a);
 }
