@@ -134,6 +134,11 @@ public class UserDao extends mySqlDao implements UserDaoInterface{
         
         return text;
     }
+
+    @Override
+    public boolean disableUser(int userID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 
 
