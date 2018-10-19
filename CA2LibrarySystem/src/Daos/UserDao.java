@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author samiwise
  */
-public class UserDao extends mySqlDao implements UserDaoInterface{
+public class UserDao extends DatabaseConnection implements UserDaoInterface{
     public UserDao(String databaseName) {
         super(databaseName);
     }
