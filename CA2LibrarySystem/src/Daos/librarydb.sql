@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 22, 2018 at 10:56 AM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.10
+-- Host: 127.0.0.1
+-- Generation Time: Oct 22, 2018 at 11:38 AM
+-- Server version: 10.1.24-MariaDB
+-- PHP Version: 7.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `wp5`
+-- Database: `librarydb`
 --
 
 -- --------------------------------------------------------
@@ -192,23 +192,24 @@ CREATE TABLE `user` (
   `firstName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
   `isAdmin` int(1) NOT NULL,
-  `dateJoined` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `dateJoined` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `active` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`userID`, `email`, `password`, `firstName`, `lastName`, `isAdmin`, `dateJoined`) VALUES
-(4, 'fakeEmail@fakingEmails.com', 'password', 'Fake', 'News', 0, '2017-10-11 21:06:33'),
-(5, 'jamesWord@gmail.com', 'passingWord', 'James', 'Wood', 0, '2017-10-11 21:12:39'),
-(6, 'Frank13@live.com', 'FrankWest92', 'Frank', 'West', 0, '2017-10-11 21:12:22'),
-(7, 'Test@test.com', 'testing', 'Sean', 'Tester', 0, '2017-10-20 00:05:06'),
-(8, 'tester@tester.com', '123', '123', '123', 0, '2017-10-20 11:01:41'),
-(9, 'ayesha@test.com', 'ayesha', 'ayesha', 'khan', 0, '2017-10-30 20:36:18'),
-(10, 'admin@admin.com', 'admin', 'Ayesha', 'Khan', 1, '2017-10-30 20:42:38'),
-(12, 'sean@gmail.com', 'sean', 'sean', 'ohora', 1, '2017-10-30 20:43:12'),
-(13, 'sami@admin', 'sami', 'sami', 'mahmoud', 1, '2017-10-30 20:43:41');
+INSERT INTO `user` (`userID`, `email`, `password`, `firstName`, `lastName`, `isAdmin`, `dateJoined`, `active`) VALUES
+(4, 'fakeEmail@fakingEmails.com', 'password', 'Fake', 'News', 0, '2018-10-22 09:34:31', 0),
+(5, 'jamesWord@gmail.com', 'passingWord', 'James', 'Wood', 0, '2018-10-22 09:19:38', 1),
+(6, 'Frank13@live.com', 'FrankWest92', 'Frank', 'West', 0, '2018-10-22 09:19:38', 1),
+(7, 'Test@test.com', 'testing', 'Sean', 'Tester', 0, '2018-10-22 09:34:31', 0),
+(8, 'tester@tester.com', '123', '123', '123', 0, '2018-10-22 09:19:38', 1),
+(9, 'ayesha@test.com', 'ayesha', 'ayesha', 'khan', 0, '2018-10-22 09:19:38', 1),
+(10, 'admin@admin.com', 'admin', 'Ayesha', 'Khan', 1, '2018-10-22 09:19:38', 1),
+(12, 'sean@gmail.com', 'sean', 'sean', 'ohora', 1, '2018-10-22 09:19:38', 1),
+(13, 'sami@admin', 'sami', 'sami', 'mahmoud', 1, '2018-10-22 09:34:31', 1);
 
 --
 -- Indexes for dumped tables
@@ -263,31 +264,26 @@ ALTER TABLE `user`
 --
 ALTER TABLE `address`
   MODIFY `addressID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
 --
 -- AUTO_INCREMENT for table `borrowed`
 --
 ALTER TABLE `borrowed`
   MODIFY `borrowedID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
 --
 -- AUTO_INCREMENT for table `genre`
 --
 ALTER TABLE `genre`
   MODIFY `genreID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
 --
 -- AUTO_INCREMENT for table `title`
 --
 ALTER TABLE `title`
   MODIFY `titleID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
 --
 -- Constraints for dumped tables
 --
