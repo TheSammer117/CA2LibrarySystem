@@ -13,10 +13,10 @@ import java.sql.SQLException;
  *
  * @author d00182295
  */
-public class mySqlDao {
+public class DatabaseConnection {
     private String databaseName;
     
-    public mySqlDao(String databaseName){
+    public DatabaseConnection(String databaseName){
         this.databaseName = databaseName;
     }
     
