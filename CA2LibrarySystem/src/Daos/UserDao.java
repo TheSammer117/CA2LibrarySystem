@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author samiwise
+ * @author Hernel
  */
 public class UserDao extends DatabaseConnection implements UserDaoInterface {
 

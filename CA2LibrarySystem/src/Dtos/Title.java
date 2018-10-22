@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author omy
  */
-public class Titles {
+public class Title {
     /**
      `titleID` int(10) NOT NULL,
   `novelName` varchar(50) NOT NULL,
@@ -28,10 +28,10 @@ public class Titles {
     private int onLoan;
     private String titleDescription;
 
-    public Titles() {
+    public Title() {
     }
 
-    public Titles(int titleID, String novelName, String author, int stock, int onLoan, String titleDescription) {
+    public Title(int titleID, String novelName, String author, int stock, int onLoan, String titleDescription) {
         this.titleID = titleID;
         this.novelName = novelName;
         this.author = author;
@@ -114,7 +114,7 @@ public class Titles {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Titles other = (Titles) obj;
+        final Title other = (Title) obj;
         
         return this.getTitleID() == other.getTitleID()
                 && this.getAuthor().equalsIgnoreCase(other.getAuthor())

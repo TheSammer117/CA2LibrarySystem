@@ -5,7 +5,7 @@
  */
 package Daos;
 
-import Dtos.Titles;
+import Dtos.Title;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author samiwise
+ * @author omy
  */
 public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
     
@@ -26,11 +26,11 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
     }
 
     @Override
-    public List<Titles> getAllTitles() {
+    public List<Title> getAllTitles() {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Titles> titles = new ArrayList<>();
+        List<Title> titles = new ArrayList<>();
         
         try{
             con = getConnection();
@@ -39,7 +39,7 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
             rs = ps.executeQuery();
             
             while(rs.next()){
-                Titles t = new Titles(rs.getInt("titleID"), 
+                Title t = new Title(rs.getInt("titleID"), 
                         rs.getString("novelName"), 
                         rs.getString("author"), 
                         rs.getInt("stock"), 
@@ -72,7 +72,7 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Titles titles = null;
+        Title titles = null;
         boolean check = false;
         
         try{
@@ -82,7 +82,7 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
             rs = ps.executeQuery();
             
             while(rs.next()){
-                titles = new Titles(rs.getInt("titleID"), 
+                titles = new Title(rs.getInt("titleID"), 
                         rs.getString("novelName"), 
                         rs.getString("author"), 
                         rs.getInt("stock"), 
