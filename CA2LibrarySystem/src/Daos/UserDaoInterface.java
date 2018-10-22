@@ -18,5 +18,5 @@ interface UserDaoInterface {
     //allow user to register; ... 
     public boolean AddUser(User a);
     public String logOff(int x);
-    public boolean disableUser(int userID);
+    public boolean disableUser(int userID, User a);
 }
