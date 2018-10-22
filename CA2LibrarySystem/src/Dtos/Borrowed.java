@@ -47,5 +47,87 @@ public class Borrowed {
     public Borrowed(){
         
     }
+
+    public int getBorrowedID() {
+        return borrowedID;
+    }
+
+    public void setBorrowedID(int borrowedID) {
+        this.borrowedID = borrowedID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getTitleID() {
+        return titleID;
+    }
+
+    public void setTitleID(int titleID) {
+        this.titleID = titleID;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Date getDayStarted() {
+        return dayStarted;
+    }
+
+    public void setDayStarted(Date dayStarted) {
+        this.dayStarted = dayStarted;
+    }
+
+    public Date getDayEnded() {
+        return dayEnded;
+    }
+
+    public void setDayEnded(Date dayEnded) {
+        this.dayEnded = dayEnded;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + this.borrowedID;
+        hash = 37 * hash + this.userID;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Borrowed other = (Borrowed) obj;
+        if (this.borrowedID != other.borrowedID) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Borrowed{" + "borrowedID=" + borrowedID + ", userID=" + userID + ", titleID=" + titleID + ", status=" + status + ", dayStarted=" + dayStarted + ", dayEnded=" + dayEnded + '}';
+    }
+
+   
+    
     
 }
