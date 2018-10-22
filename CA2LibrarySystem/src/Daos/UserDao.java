@@ -20,20 +20,24 @@ import java.util.logging.Logger;
  *
  * @author samiwise
  */
-public class UserDao extends DatabaseConnection implements UserDaoInterface{
+public class UserDao extends DatabaseConnection implements UserDaoInterface {
+
     public UserDao(String databaseName) {
         super(databaseName);
     }
+// *******************************************************************************************************
+    // *******************************************************************************************************
+    // *******************************************************************************************************
 
     @Override
     public boolean Login(String UserEmail, String UserPassword) {
-         // Required for DB interaction
+        // Required for DB interaction
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         boolean check = false;
         List<User> users = new ArrayList();
-         try{
+        try {
             con = getConnection();
             // Make query
             String query = "SELECT * FROM user WHERE email = ? AND password = ?";
@@ -44,52 +48,53 @@ public class UserDao extends DatabaseConnection implements UserDaoInterface{
             ps.setString(2, UserPassword);
             // Execute the SQL
             rs = ps.executeQuery();
-            
+
             // check if user does exist inside database;......
-            if(rs != null){
+            if (rs != null) {
                 check = true;
-            }else{
+            } else {
                 check = false;
             }
-           
-        }
-        catch(SQLException ex){
+
+        } catch (SQLException ex) {
             System.out.println("An exception occurred while querying "
                     + ex.getMessage());
-            
-        }
-        // Shut down all open components
-        finally{
-            if(rs != null){
+
+        } // Shut down all open components
+        finally {
+            if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if(ps != null){
+            if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if(con != null){
+            if (con != null) {
                 freeConnection(con);
             }
         }
         return check;
     }
+// *******************************************************************************************************
+    // *******************************************************************************************************
+    // *******************************************************************************************************
 
     @Override
     public boolean AddUser(User a) {
-          // Required for DB interaction
+        // Required for DB interaction
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         boolean check = false;
-        
-        try{
+
+        try {
             con = getConnection();
             // Make query
             String query = "INSERT INTO user(email,password,firstName,lastName,country,addressLine1,addressLine2,isAdmin) VALUES (?,?,?,?,?,?,?,?)";
@@ -106,54 +111,88 @@ public class UserDao extends DatabaseConnection implements UserDaoInterface{
             ps.setInt(8, a.getIsAdmin());
             // Execute the SQL
             rs = ps.executeQuery();
-            
+
             // check if user does exist inside database;......
-            if(rs != null){
+            if (rs != null) {
                 check = true;
-            }else{
+            } else {
                 check = false;
             }
-           
-        }
-        catch(SQLException ex){
+
+        } catch (SQLException ex) {
             System.out.println("An exception occurred while querying "
                     + ex.getMessage());
-            
+
         }
-        
-        
+
         return check;
     }
 
     @Override
     public String logOff(int x) {
         String text = null;
-        if(x == 0){
+        if (x == 0) {
             text = "LOGGIN OFF";
         }
-        
+
         return text;
     }
+// *******************************************************************************************************
+    // *******************************************************************************************************
+    // *******************************************************************************************************
 
     @Override
-    public boolean disableUser(int userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean disableUser(int userID, User a) {
+        // Required for DB interaction
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean check = false;
+        List<User> users = new ArrayList();
+        try {
+            con = getConnection();
+            // Make query
+            String query = "UPDATE users SET active = 0 WHERE userID = ?";
+            // Compile into SQL
+            ps = con.prepareStatement(query);
+            // (Fill in blanks of query)
+            ps.setInt(1, userID);
+            // Execute the SQL
+            rs = ps.executeQuery();
+
+            // check if user does exist inside database;......
+            if (a.getIsAdmin() == 1) {
+                if (rs != null) {
+                    check = true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("An exception occurred while querying "
+                    + ex.getMessage());
+
+        } // Shut down all open components
+        finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (con != null) {
+                freeConnection(con);
+            }
+        }
+        return check;
     }
+// *******************************************************************************************************
+    // *******************************************************************************************************
+    // *******************************************************************************************************
 }
-
-
-//    while(rs.next()){
-//                int userID = rs.getInt("userID");
-//                String email = rs.getString("email");
-//                String password = rs.getString("password");
-//                String firstName = rs.getString("firstName");
-//                String lastName = rs.getString("lastName");
-//                String country = rs.getString("country");
-//                String addressLine1 = rs.getString("addressLine1");
-//                String addressLine2 =rs.getString("addressLine2");
-//                int isAdmin = rs.getInt("idAdmin");
-//                Date dateJoined = rs.getDate("dateJoined");
-//               
-//                User use = new User(userID,email,password,firstName,lastName,country,addressLine1,addressLine2,isAdmin,dateJoined);    
-//                users.add(use);
-//            } 
