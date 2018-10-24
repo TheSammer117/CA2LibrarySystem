@@ -264,34 +264,62 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
     }
 
     @Override
-    public Title changeStock(int titleID, int stock) {
+    public boolean changeStock(int titleID, int stock, String options) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        int rowsAffected = 0;
-        Title title = null;
-        int currentStock = 0;
+        boolean check =false;
         
         try {
-        con = getConnection();
-        String query = "SELECT * From Title Where titleID = ?";
-        ps = con.prepareStatement(query);
-        ps.setInt(1, titleID);
+        con = getConnection();        
+        
+        if(options.equalsIgnoreCase("increase")){
+        String query1 = "update title set stock = stock + ? where titleID = ? ";
+        ps = con.prepareStatement(query1);
+        ps.setInt(1, stock);
+        ps.setInt(2, titleID);        
         rs = ps.executeQuery();
-        
-        if(rs.next()){
-            if( (rs.getInt("stock") - stock) >= 0){
-                String query1 = "UPDATE Title SET stock = stock - ? WHERE titleID = ?";
+        if (rs != null) {
+                check = true;
+            } else {
+                check = false;
             }
-          
-        }
+        check = true;
         
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(TitleDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        return title;
+        }else if(options.equalsIgnoreCase("decrease")){
+            String query2 = "update title set stock = stock - ? where titleID = ? ";
+        ps = con.prepareStatement(query2);
+        ps.setInt(1, stock);
+        ps.setInt(2, titleID);        
+        rs = ps.executeQuery();
+        if (rs != null) {
+                check = true;
+            } else {
+                check = false;
+            }
+        check = true;
+        
+        } 
+
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the changeStock() method: " + e.getMessage());
+        }finally {
+            try{
+                if(rs != null){
+                    rs.close();
+                }
+                if(ps != null){
+                    ps.close();
+                }
+                if(con != null){
+                    freeConnection(con);
+                }
+            }catch(SQLException e){
+                System.out.println("Exception occured in the finally section of the changeStock() method: " + e.getMessage());
+            }
+        }
+        return check;
     }
 
 }
