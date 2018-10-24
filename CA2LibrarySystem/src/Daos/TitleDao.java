@@ -5,7 +5,6 @@
  */
 package Daos;
 
-import Daos.DatabaseConnection;
 import Dtos.Title;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -24,7 +21,7 @@ import java.util.logging.Logger;
 public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
 
     /**
-     * Initialises a TitleDao to access the specified database name
+     * Initialise a TitleDao to access the specified database name
      *
      * @param databaseName The name of the MySQL database to be accessed (this
      * database should be running on localhost and listening on port 3306).
@@ -35,15 +32,16 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
     }
 
     /**
-     * Returns a list of {@code Title} objects based on information in the
+     * Returns a list of Title objects based on information in the
      * database. All titles entries in the Title table are selected from the
-     * database and stored as {@code Title} objects in a {@code List}.
+     * database and stored as title objects in a List.
      *
-     * @return The {@code List} of all titles entries in the Title table. This
-     * {@code List} may be empty where no books are present in the database.
+     * @return The title list of all titles entries in the Title table. This
+     * List may be empty where no books are present in the database.
      */
     @Override
     public List<Title> getAllTitles() {
+        
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -86,6 +84,7 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
 
     /**
      * Returns a new {@code Title} object which just adding into the database.
+     * The method returns true if the result gets any feedback otherwise.
      *
      * @param titleID, the id of a new title
      * @param novelName the name of a new title
@@ -140,14 +139,14 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
     /**
      *
      * Updates a exited Title in the database matching the specified titleID,
-     * The method should update the values to the specified columns.
+     * The method should return true if it updates the values to the table.
      *
      * @param titleID The ID of title to find the specified row from database
      * @param novelName The name to which this title should be changed.
      * @param author the author of the matching title should be changed.
      * @param titleDescription the description of the matching title should be
      * changed.
-     * @return return true/false if the tile entires changed in the Titles
+     * @return return true/false if the title entire changed in the Titles
      * table.
      */
     @Override
@@ -190,7 +189,15 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
 
         return result;
     }
-
+    /**
+     *
+     * Remove a exited Title in the database matching the specified titleID,
+     * The method should return true if a title deleted.
+     *
+     * @param titleID The ID of title to find the specified row from database
+     * 
+     * @return return true/false if the title deletes successfully.
+     */
     @Override
     public boolean removeTitleByID(int titleID) {
         Connection con = null;
@@ -226,7 +233,15 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
 
         return result;
     }
-
+    /**
+     *
+     * Get the specified title by matching the name of the title.
+     * The method should return the entire title which contains the specified novel's name.
+     *
+     * @param novelName
+     * @return return the information of a title by specified novel's name; 
+     * table.
+     */
     @Override
     public Title searchTitleByName(String novelName) {
         Connection con = null;
@@ -264,7 +279,15 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
 
         return title;
     }
-
+    /**
+     *increase/decrease the stock by a chosen option.
+     * The method should return true if the result 
+     *
+     * @param titleID The ID of title to find the specified row from database
+     * @param stock The current stock of a title via specified id.
+     * @param options the string variables to record whether user increase/decrease the stock of a title.
+     * @return return true/false if the result contains any values otherwise.
+     */
     @Override
     public boolean changeStock(int titleID, int stock, String options) {
         Connection con = null;
@@ -281,7 +304,8 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
                 ps.setInt(1, stock);
                 ps.setInt(2, titleID);
                 rs = ps.executeQuery();
-                if (rs != null) {
+                if (rs != null) 
+                {
                     check = true;
                 }
                 check = true;
@@ -292,7 +316,8 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
                 ps.setInt(1, stock);
                 ps.setInt(2, titleID);
                 rs = ps.executeQuery();
-                if (rs != null) {
+                if (rs != null) 
+                {
                     check = true;
                 }
                 check = true;
