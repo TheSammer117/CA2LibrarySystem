@@ -5,6 +5,7 @@
  */
 package Daos;
 
+import Daos.DatabaseConnection;
 import Dtos.Title;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,14 +18,30 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author omy
+ * @author Haiyun Yu D00188956
+ * 
  */
 public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
+    /**
+     * Initialises a TitleDao to access the specified database name
+     * 
+     * @param databaseName The name of the MySQL database to be accessed (this database should 
+     * be running on localhost and listening on port 3306).
+     */
     
     public TitleDao(String databaseName) {
         super(databaseName);
     }
 
+     /**
+     * Returns a list of {@code Title} objects based on information in the database. 
+     * All titles entries in the Title table are selected from the database and stored
+     * as {@code Title} objects in a {@code List}.
+     * 
+     * @return The {@code List} of all titles entries in the Title table. 
+     * This {@code List} may be empty where no books are present in the database.
+     */
+    
     @Override
     public List<Title> getAllTitles() {
         Connection con = null;
@@ -61,38 +78,173 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
                     freeConnection(con);
                 }
             } catch (SQLException ex){
-                System.out.println("Exception occured in the finally section of the getAllTitles() method, " + ex.getMessage());
+                System.out.println("Exception occured in the final section of the getAllTitles() method, " + ex.getMessage());
             }
         }
         return titles;
     }
-
+     /**
+     * Returns a new {@code Title} object which just adding into the database. 
+     * 
+     * @param titleID, the id of a new title
+     * @param novelName the name of a new title
+     * @param author the author of the book
+     * @param stock the amount of title stored in the library
+     * @param onLoan the loaning copies of a title
+     * @param titleDescription describe the information of a title
+     * @return the title with its all information
+     */
+    
     @Override
     public boolean addTitle(int titleID, String novelName, String author, int stock, int onLoan, String titleDescription) {
         Connection con = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
-        Title titles = null;
-        boolean check = false;
-        
+        boolean result = false;
+        int rowsAffected = 0;
         try{
             con = getConnection();
-            String query = "INSERT ";
+            String query = "INSERT INTO Title "
+                    + "(titleID, novelName, author, stock, onLoan, titleDescription)"
+                    + "values ( ?, ?, ?, ?, ?, ?) ";
             ps = con.prepareStatement(query);
-            rs = ps.executeQuery();
+            ps.setInt(1, titleID);
+            ps.setString(2, novelName);
+            ps.setString(3, author);
+            ps.setInt(4, stock);
+            ps.setInt(5, onLoan);
+            ps.setString(6, titleDescription);
+            rowsAffected = ps.executeUpdate();
             
-            while(rs.next()){
-                titles = new Title(rs.getInt("titleID"), 
-                        rs.getString("novelName"), 
-                        rs.getString("author"), 
-                        rs.getInt("stock"), 
-                        rs.getInt("onLoan"), 
-                        rs.getString("titleDescription"));
-                
+            if(rowsAffected == 1){
+                result = true;
+            }            
+        }catch(SQLException e){
+                System.out.println("Exception occured in the final section of the addTitle() method, " + e.getMessage());
+            }finally {
+            try{
+                if(ps != null){
+                    ps.close();
+                }
+                if(con != null){
+                    freeConnection(con);
+                }
+            } catch (SQLException ex){
+                System.out.println("Exception occured in the final section of the addTitle() method, " + ex.getMessage());
             }
-        } catch (SQLException ex) {
-            System.out.println("Exception occured in the getAllTitles() method, " + ex.getMessage());
+        }
+       
+       return result;
+    }
+    
+    /**
+     * 
+     * Updates a exited Title in the database matching the specified titleID, 
+     * The method should update the values to the specified columns.
+     * 
+     * @param titleID   The ID of title to find the specified row from database 
+     * @param novelName    The name to which this title should be changed.
+     * @param author the author of the matching title should be changed.
+     * @param titleDescription the description of the matching title should be changed.
+     * @return return true/false if the tile entires changed in the Titles table.
+     */
+    @Override
+    public boolean updateTitleDetail(int titleID, String novelName, String author, String titleDescription) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean result = false;
+        int rowsAffected = 0;
+        
+        con = getConnection();
+            String query ="UPDATE Title SET novelName = ?, author = ?,  titleDescription = ? WHERE titleID = ? ";
+            
+        try {
+            ps = con.prepareStatement(query);
+            ps.setString(1, novelName);
+            ps.setString(2, author);
+            ps.setString(3, titleDescription);
+            ps.setInt(4, titleID);
+            rowsAffected = ps.executeUpdate();
+            
+            if(rowsAffected == 1){
+                result = true;
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the updateTitleDetail() method: " + e.getMessage());
         } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the final section of the updateTitleDetail() method");
+                e.getMessage();
+            }
+        }
+        
+        return result;
+    }
+
+    @Override
+    public boolean removeTitleByID(int titleID) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean result = false;
+        int rowsAffected = 0;
+        
+        con = getConnection();
+        String query = "DELETE FROM Title WHERE titleID = ? ";
+        
+        try {
+            ps = con.prepareStatement(query);
+            ps.setInt(1, titleID);
+            rowsAffected = ps.executeUpdate();
+            if(rowsAffected == 1){
+                result = true;
+            }
+        } catch (SQLException e) {
+           System.out.println("Exception occured in the removeTtileByID() method: " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the removeTtileByID() method");
+                e.getMessage();
+            }
+        }
+        
+        
+        return result;
+    }
+
+    @Override
+    public Title searchTitleByName(String novelName) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Title title = null;
+        
+        con = getConnection();
+        
+        String query = "SELECT * FROM Title WHERE novelName Like '%?%' ";
+        try {
+            ps = con.prepareStatement(query);
+            ps.setString(1, novelName);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                title = new Title(rs.getInt("titleID"), rs.getString("novelName"), rs.getString("author"), rs.getInt("stock"), rs.getInt("onLoan"), rs.getString("titleDescription"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the searchTitleByName() method: " + e.getMessage());
+        }finally {
             try{
                 if(rs != null){
                     rs.close();
@@ -103,27 +255,43 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
                 if(con != null){
                     freeConnection(con);
                 }
-            } catch (SQLException ex){
-                System.out.println("Exception occured in the finally section of the getAllTitles() method, " + ex.getMessage());
+            }catch(SQLException e){
+                System.out.println("Exception occured in the finally section of the searchTitleByName() method: " + e.getMessage());
             }
         }
-        return check;
+        
+        return title;
     }
 
     @Override
-    public String updateTitleDetail(String novelName, String author, int stock, int onLoan, String titleDescription) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Title changeStock(int titleID, int stock) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int rowsAffected = 0;
+        Title title = null;
+        int currentStock = 0;
+        
+        try {
+        con = getConnection();
+        String query = "SELECT * From Title Where titleID = ?";
+        ps = con.prepareStatement(query);
+        ps.setInt(1, titleID);
+        rs = ps.executeQuery();
+        
+        if(rs.next()){
+            if( (rs.getInt("stock") - stock) >= 0){
+                String query1 = "UPDATE Title SET stock = stock - ? WHERE titleID = ?";
+            }
+          
+        }
+        
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TitleDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return title;
     }
 
-    @Override
-    public boolean removeTitleByID(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String searchTitleByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    
 }
