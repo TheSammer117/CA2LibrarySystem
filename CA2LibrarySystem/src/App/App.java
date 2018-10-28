@@ -113,7 +113,7 @@ public class App {
                         if (ad.equalsIgnoreCase("y")) {
                             int yes = 1;
                             //if the new member is an admin...
-                            user = new User(email, password, fName, lName, yes, );
+                            user = new User(email, password, fName, lName, null, yes);
                             userDao.AddUser(user);
                             System.out.println("Admin Registered successfully.");
                             
@@ -122,7 +122,7 @@ public class App {
                         } else if (ad.equalsIgnoreCase("n")) {
                             int no = 0;
                             //if the new member is not an admin...
-                            user = new User(email, password, fName, lName, country, line1, line2, no, dCurrent);
+                            user = new User(email, password, fName, lName, null, no );
                             userDao.AddUser(user);
                             System.out.println("User Registered successfully.");
                             
