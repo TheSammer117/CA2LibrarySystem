@@ -5,6 +5,7 @@
  */
 package App;
 
+import Daos.BorrowedDao;
 import Daos.TitleDao;
 import Daos.UserDao;
 import Dtos.Borrowed;
@@ -25,8 +26,8 @@ public class App {
         Scanner input = new Scanner(System.in);
         UserDao userDao = new UserDao();
         TitleDao titleDao = new TitleDao();
+        BorrowedDao borrowedDao = new BorrowedDao();
         User user = null;
-        Title title = null;
 
         int choice = -1;
         int userChoice = -1;
@@ -193,6 +194,10 @@ public class App {
                         }
                     case 3:
                         //borrow one title;
+                        Borrowed b = new Borrowed();
+                        System.out.println("Borrow title: ");
+                        int id = input.nextInt();
+                        System.out.println("");
                         userChoice = -1;
                         break;
                     case 4:
@@ -282,7 +287,7 @@ public class App {
                             System.out.println("Enter the description of this title: ");
                             String des = input.nextLine();
                             Title t = new Title(id, name, author, stock, onLoan, des);
-                            boolean check = titleDao.addTitle(id, name, author, stock, onLoan, des);
+                            boolean check = titleDao.addTitle(t);
                             if(check == true){
                                 System.out.println("Title added successfully.");
                                 t.toString();
@@ -302,7 +307,7 @@ public class App {
                                     System.out.println("Found title.");
                                     tList.get(i).toString();
                                     
-                                    System.out.println("Please enter the details of this title: ");
+                                    System.out.println("Please enter which parts of this title to change: ");
                                     System.out.println("Enter the name of title: ");
                                     String name = input.nextLine();
                                     System.out.println("Enter the author of title: ");
@@ -310,13 +315,20 @@ public class App {
                                     System.out.println("Enter the Description of title:");
                                     String des = input.nextLine();
                                     
-                                    boolean check = titleDao.updateTitleDetail(titleID, name, author, des);
+                                    Title t = new Title();
+
+                                    t.setTitleID(tList.get(i).getTitleID());
+                                    t.setNovelName(name);
+                                    t.setAuthor(author);
+                                    t.setStock(tList.get(i).getStock());
+                                    t.setOnLoan(tList.get(i).getOnLoan());
+                                    t.setTitleDescription(des);
+                                    
+                                    boolean check = titleDao.updateTitleDetail(titleID, t);
                                     if(check == true){
-                                        System.out.println("Title updated successfully.");
-                                        tList.get(i).toString();
+                                        System.out.println("Title updated successfully.");                                        
                                     }else {
-                                        System.out.println("Title isn't updated");
-                                        tList.get(i).toString();
+                                        System.out.println("Title isn't updated");                                        
                                     }
                                 }
                             }       adminChoice = -1;
