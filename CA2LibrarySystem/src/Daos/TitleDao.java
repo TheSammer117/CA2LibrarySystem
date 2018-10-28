@@ -95,26 +95,23 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
      */
 
     @Override
-    public boolean addTitle(int titleID, String novelName, String author, int stock, int onLoan, String titleDescription) {
+    public boolean addTitle(Title title) {
         Connection con = null;
         PreparedStatement ps = null;
         boolean result = false;
-        int rowsAffected = 0;
+        int rs = 0;
         try {
             con = getConnection();
-            String query = "INSERT INTO Title "
-                    + "(titleID, novelName, author, stock, onLoan, titleDescription)"
-                    + "values ( ?, ?, ?, ?, ?, ?) ";
+            String query = "INSERT INTO Title VALUES (NULL,?,?,?,?,?)";
             ps = con.prepareStatement(query);
-            ps.setInt(1, titleID);
-            ps.setString(2, novelName);
-            ps.setString(3, author);
-            ps.setInt(4, stock);
-            ps.setInt(5, onLoan);
-            ps.setString(6, titleDescription);
-            rowsAffected = ps.executeUpdate();
+            ps.setString(1, title.getNovelName());
+            ps.setString(2, title.getAuthor());
+            ps.setInt(3, title.getStock());
+            ps.setInt(4, title.getOnLoan());
+            ps.setString(5, title.getTitleDescription());
+            rs = ps.executeUpdate();
 
-            if (rowsAffected == 1) {
+            if (rs >0) {
                 result = true;
             }
         } catch (SQLException e) {
@@ -149,7 +146,7 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
      * table.
      */
     @Override
-    public boolean updateTitleDetail(int titleID, String novelName, String author, String titleDescription) {
+    public boolean updateTitleDetail(int titleID, Title title) {
         Connection con = null;
         PreparedStatement ps = null;
         boolean result = false;
@@ -160,10 +157,10 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
 
         try {
             ps = con.prepareStatement(query);
-            ps.setString(1, novelName);
-            ps.setString(2, author);
-            ps.setString(3, titleDescription);
-            ps.setInt(4, titleID);
+            ps.setString(1, title.getNovelName());
+            ps.setString(2, title.getAuthor());
+            ps.setString(3, title.getTitleDescription());
+            ps.setInt(4, title.getStock());
             rowsAffected = ps.executeUpdate();
 
             if (rowsAffected == 1) {
