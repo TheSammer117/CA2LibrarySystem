@@ -5,6 +5,7 @@
  */
 package Daos;
 
+import interfaces.UserDaoInterface;
 import Dtos.User;
 import java.sql.Connection;
 import java.sql.Date;
@@ -22,9 +23,8 @@ import java.util.logging.Logger;
  */
 public class UserDao extends DatabaseConnection implements UserDaoInterface {
 
-    public UserDao(String databaseName) {
-        super(databaseName);
-    }
+ 
+
 // *******************************************************************************************************
     // *******************************************************************************************************
     // *******************************************************************************************************
@@ -97,7 +97,7 @@ public class UserDao extends DatabaseConnection implements UserDaoInterface {
         try {
             con = getConnection();
             // Make query
-            String query = "INSERT INTO user(email,password,firstName,lastName,country,addressLine1,addressLine2,isAdmin) VALUES (?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO user VALUES (NULL,?,?,?,?,?,NULL,?)";
             // Compile into SQL
             ps = con.prepareStatement(query);
             // (Fill in blanks of query)
@@ -105,10 +105,8 @@ public class UserDao extends DatabaseConnection implements UserDaoInterface {
             ps.setString(2, a.getPassword());
             ps.setString(3, a.getFirstName());
             ps.setString(4, a.getLastName());
-            ps.setString(5, a.getCountry());
-            ps.setString(6, a.getAddressLine1());
-            ps.setString(7, a.getAddressLine2());
-            ps.setInt(8, a.getIsAdmin());
+            ps.setInt(5, a.getIsAdmin());
+            ps.setInt(6, a.getActive());
             // Execute the SQL
             rs = ps.executeQuery();
 
@@ -191,6 +189,43 @@ public class UserDao extends DatabaseConnection implements UserDaoInterface {
             }
         }
         return check;
+    }
+   @Override
+    public User findUserByID(int userID) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        User u = null;
+
+        try {
+            conn = getConnection();
+
+            String query = "SELECT * FROM users WHERE userID = ?";
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, userID);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                u = new User(rs.getInt("userID"), rs.getString("email"), rs.getString("password"), rs.getString("firstName"), rs.getString("lastName"), rs.getInt("isAdmin"), rs.getInt("active"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the findUserByID() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    freeConnection(conn);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the findUserByID() method: " + e.getMessage());
+            }
+        }
+        return u;
     }
 // *******************************************************************************************************
     // *******************************************************************************************************

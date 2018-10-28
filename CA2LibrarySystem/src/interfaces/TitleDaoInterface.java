@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Daos;
+package interfaces;
 
 import Dtos.Title;
 import java.util.List;
@@ -26,5 +26,6 @@ public interface TitleDaoInterface {
     //decrease/increase the stock of titles
     public boolean changeStock(int titleID, int stock, String options);
     
+    public Title searchByID(int id);
     
 }

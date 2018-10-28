@@ -7,6 +7,7 @@ package Dtos;
 
 //import java.time.LocalDateTime;
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -21,33 +22,46 @@ public class Borrowed {
      *
      */
     private int borrowedID;
-    private int userID;
-    private int titleID;
+    private User user;
+    private Title title;
     private int status;
     private Date dayStarted;
+    private Date dueDate;
     private Date dayEnded;
 
-    public Borrowed(int borrowedID, int userID, int titleID, int status, Date dayStarted, Date dayEnded) {
+    public Borrowed(int borrowedID, User user, Title title, int status) {
         this.borrowedID = borrowedID;
-        this.userID = userID;
-        this.titleID = titleID;
+        this.user = user;
+        this.title = title;
         this.status = status;
-        this.dayStarted = dayStarted;
-        this.dayEnded = dayEnded;
+        //this.dayStarted = dayStarted;
+        this.dueDate = addHoursToDate(this.dayStarted, 72);
+        //this.dayEnded = dayEnded;
     }
     
-    public Borrowed(int userID, int titleID, int status, Date dayStarted, Date dayEnded){
-        this.userID = userID;
-        this.titleID = titleID;
+    public Borrowed(User user, Title title, int status){
+        this.user = user;
+        this.title = title;
         this.status = status;
-        this.dayStarted = dayStarted;
-        this.dayEnded = dayEnded;
+       //this.dayStarted = dayStarted;
+        this.dueDate = addHoursToDate(this.dayStarted, 72);
+        //this.dayEnded = dayEnded;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
     }
     
     public Borrowed(){
         
     }
 
+    private Date addHoursToDate(Date date, int hours){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return (Date) calendar.getTime();
+    }
     public int getBorrowedID() {
         return borrowedID;
     }
@@ -56,20 +70,20 @@ public class Borrowed {
         this.borrowedID = borrowedID;
     }
 
-    public int getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
-
-    public int getTitleID() {
-        return titleID;
+    
+    public Title getTitle(){
+        return this.title;
     }
-
-    public void setTitleID(int titleID) {
-        this.titleID = titleID;
+    
+    public void setTitle(Title title){
+        this.title = title;
     }
 
     public int getStatus() {
@@ -100,7 +114,7 @@ public class Borrowed {
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + this.borrowedID;
-        hash = 37 * hash + this.userID;
+        
         return hash;
     }
 
@@ -124,7 +138,7 @@ public class Borrowed {
 
     @Override
     public String toString() {
-        return "Borrowed{" + "borrowedID=" + borrowedID + ", userID=" + userID + ", titleID=" + titleID + ", status=" + status + ", dayStarted=" + dayStarted + ", dayEnded=" + dayEnded + '}';
+        return "Borrowed{" + "borrowedID=" + borrowedID + ", user=" + user + ", title=" + title + ", status=" + status + ", dayStarted=" + dayStarted + ", dayEnded=" + dayEnded + '}';
     }
 
    

@@ -14,15 +14,10 @@ import java.sql.SQLException;
  * @author d00182295
  */
 public class DatabaseConnection {
-    private String databaseName;
-    
-    public DatabaseConnection(String databaseName){
-        this.databaseName = databaseName;
-    }
-    
+
     public Connection getConnection(){
         String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/" + databaseName;
+        String url = "jdbc:mysql://localhost:3306/librarydb";
         String username = "root";
         String password = "";
         Connection con = null;

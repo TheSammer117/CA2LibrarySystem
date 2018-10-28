@@ -5,6 +5,7 @@
  */
 package Daos;
 
+import interfaces.TitleDaoInterface;
 import Dtos.Title;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,9 +28,7 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
      * database should be running on localhost and listening on port 3306).
      */
 
-    public TitleDao(String databaseName) {
-        super(databaseName);
-    }
+
 
     /**
      * Returns a list of Title objects based on information in the
@@ -344,4 +343,40 @@ public class TitleDao extends DatabaseConnection implements TitleDaoInterface {
         return check;
     }
 
+    @Override 
+    public Title searchByID(int id){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Title t = null;
+        
+        try{
+            conn = getConnection();
+            
+            String query = "SELECT * FROM titles WHERE titleID = ?";
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                t = new Title(rs.getInt("titleID"), rs.getString("novelName"), rs.getString("author"), rs.getInt("stock"), rs.getInt("onLoan"), rs.getString("titleDescription"));
+            }
+        } catch(SQLException e){
+            System.out.println("Exception occured in the searchByID() method " + e.getMessage());
+        } finally{
+            try{
+                if(rs != null){
+                    rs.close();
+                }
+                if(ps != null){
+                    ps.close();
+                }
+                if(conn != null){
+                    freeConnection(conn);
+                }
+            } catch(SQLException e){
+                System.out.println("Exception occured in finally section of searchByID() method " + e.getMessage());
+            }
+        }
+        return t;
+    }
 }

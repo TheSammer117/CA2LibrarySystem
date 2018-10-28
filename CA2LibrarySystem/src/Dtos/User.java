@@ -13,41 +13,46 @@ import java.util.Date;
  */
 public class User {
     
-//    CREATE TABLE `users` (
-//  `userID` int(10) NOT NULL,
-//  `email` varchar(50) NOT NULL,
-//  `password` varchar(30) NOT NULL,
-//  `firstName` varchar(50) NOT NULL,
-//  `lastName` varchar(50) NOT NULL,
-//  `country` varchar(25) NOT NULL,
-//  `addressLine1` varchar(50) NOT NULL,
-//  `addressLine2` varchar(50) NOT NULL,
-//  `isAdmin` int(1) NOT NULL,
-//  `dateJoined` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-//) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+//CREATE TABLE `user` (
+  //`userID` int(10) NOT NULL,
+  //`email` varchar(50) NOT NULL,
+  //`password` varchar(30) NOT NULL,
+  //`firstName` varchar(50) NOT NULL,
+  //`lastName` varchar(50) NOT NULL,
+  //`isAdmin` int(1) NOT NULL,
+  //`dateJoined` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ // `active` int(1) NOT NULL
+//) ENGINE=InnoDB DEFAULT CHARSET=latin1;//
     
     private int userID;
     private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private String country;
-    private String addressLine1;
-    private String addressLine2;
+   // private String country;
+    //private String addressLine1;
+    //private String addressLine2;
     private int isAdmin;
-    private Date dateJoined;
+    private int active;
 
-    public User(int userID, String email, String password, String firstName, String lastName, String country, String addressLine1, String addressLine2, int isAdmin, Date dateJoined) {
+    public User(int userID, String email, String password, String firstName, String lastName, int isAdmin, int active) {
         this.userID = userID;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.country = country;
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
         this.isAdmin = isAdmin;
-        this.dateJoined = dateJoined;
+        this.active = active;
+    }
+    
+    public User(String email, String password, String firstName, String lastName, int isAdmin, Date dateJoined, int active) {
+        
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isAdmin = isAdmin;
+        this.active = active;
     }
 
     public User() {
@@ -73,25 +78,12 @@ public class User {
         return lastName;
     }
 
-    public String getCountry() {
-        return country;
-    }
 
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
 
     public int getIsAdmin() {
         return isAdmin;
     }
 
-    public Date getDateJoined() {
-        return dateJoined;
-    }
 
     public void setUserID(int userID) {
         this.userID = userID;
@@ -113,25 +105,13 @@ public class User {
         this.lastName = lastName;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
-
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
+  
 
     public void setIsAdmin(int isAdmin) {
         this.isAdmin = isAdmin;
     }
 
-    public void setDateJoined(Date dateJoined) {
-        this.dateJoined = dateJoined;
-    }
+    
 
     @Override
     public int hashCode() {
@@ -160,7 +140,15 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userID=" + userID + ", email=" + email + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", country=" + country + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", isAdmin=" + isAdmin + ", dateJoined=" + dateJoined + '}';
+        return "User{" + "userID=" + userID + ", email=" + email + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", isAdmin=" + isAdmin + '}';
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
     
     
