@@ -22,16 +22,22 @@ public class Address {
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
      **/
     private int addressID;
-    private int userID;
+    private User user;
     private String address1;
     private String address2;
 
     public Address() {
     }
 
-    public Address(int addressID, int userID, String address1, String address2) {
+    public Address(int addressID, User user, String address1, String address2) {
         this.addressID = addressID;
-        this.userID = userID;
+        this.user = user;
+        this.address1 = address1;
+        this.address2 = address2;
+    }
+    
+    public Address(User user, String address1, String address2){
+        this.user = user;
         this.address1 = address1;
         this.address2 = address2;
     }
@@ -44,12 +50,12 @@ public class Address {
         this.addressID = addressID;
     }
 
-    public int getUserID() {
-        return userID;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAddress1() {
@@ -68,19 +74,11 @@ public class Address {
         this.address2 = address2;
     }
 
-
-    @Override
-    public String toString() {
-        return "Address{" + "addressID=" + addressID + ", userID=" + userID + ", address1=" + address1 + ", address2=" + address2 + '}';
-    }
-
-    
     @Override
     public int hashCode() {
-        return ((Integer)this.getUserID()).hashCode()
-                + ((Integer)this.getUserID()).hashCode()
-                + this.getAddress1().hashCode()
-                + this.getAddress2().hashCode();
+        int hash = 3;
+        hash = 41 * hash + this.addressID;
+        return hash;
     }
 
     @Override
@@ -95,11 +93,22 @@ public class Address {
             return false;
         }
         final Address other = (Address) obj;
-        return this.getAddressID() == other.getAddressID()
-                && this.getUserID() == other.getUserID()
-                && this.getAddress1().equalsIgnoreCase(other.getAddress1())
-                && this.getAddress2().equalsIgnoreCase(other.getAddress2());
+        if (this.addressID != other.addressID) {
+            return false;
+        }
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" + "addressID=" + addressID + ", user=" + user + ", address1=" + address1 + ", address2=" + address2 + '}';
+    }
+
+
+    
+
+    
+
     
     
 }
