@@ -9,8 +9,9 @@ import Dtos.Title;
 import java.util.List;
 
 /**
- *
- * @author Haiyun Yu D00188956
+ *Team : Hernel, Sami, Haiyun
+ * 
+ * @author HaiyunYu D00188956
  */
 public interface TitleDaoInterface {
     //viewing the details of all books in the library;

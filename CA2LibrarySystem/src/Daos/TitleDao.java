@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author Haiyun Yu D00188956
+ *Team : Hernel, Sami, Haiyun
+ * 
+ * @author HaiyunYu D00188956
  *
  */
 public class TitleDao extends DatabaseConnection implements TitleDaoInterface {

@@ -8,8 +8,10 @@ package Dtos;
 import java.util.Objects;
 
 /**
- *
- * @author omy
+ *Team : Hernel, Sami, Haiyun
+ * 
+ * @author HaiyunYu D00188956
+ * 
  */
 public class Title {
     /**
